@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newis - Soluções de Automação com IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+        }
+        .section-title {
+            font-size: 2.5rem; /* 40px */
+            font-weight: 700;
+            margin-bottom: 1.5rem; /* 24px */
+            color: #1f2937; /* gray-800 */
+        }
+        .solution-card {
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+            cursor: pointer; /* Indica que é clicável */
+        }
+        .solution-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+        .whatsapp-icon-white { /* Para ícone do WhatsApp branco no modal */
+            filter: brightness(0) invert(1);
+        }
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .typing-effect span {
+            border-right: .1em solid #333;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            animation: typing 3s steps(30, end) forwards, blink-caret .75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #333; }
+        }
+        .cta-button {
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 40; /* Abaixo do modal */
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        /* Estilos para Modal */
+        .modal {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 100; /* Acima de tudo */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.is-open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem; /* 32px */
+            border-radius: 0.75rem; /* 12px */
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            max-width: 48rem; /* 768px */
+            width: 100%;
+            position: relative;
+            max-height: 90vh; /* Altura máxima do modal */
+            overflow-y: auto; /* Scroll se conteúdo for maior */
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 1rem; /* 16px */
+            right: 1rem; /* 16px */
+            color: #6b7280; /* gray-500 */
+        }
+        .modal-close-btn:hover {
+            color: #1f2937; /* gray-800 */
+        }
+        .modal-visual {
+            height: 80px; /* Altura para o SVG/imagem no modal */
+            margin: 1.5rem auto; /* 24px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-visual svg, .modal-visual img {
+            max-height: 100%;
+            width: auto;
+            color: #3b82f6; /* blue-500, pode ser ajustado por SVG */
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+    <header class="py-4">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-gray-900 hover:text-blue-600 transition-colors">Newis</a>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Início</a></li>
+                    <li><a href="#solutions" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Soluções</a></li>
+                    <li><a href="#about" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Sobre</a></li>
+                    <li><a href="#contact" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero-bg min-h-screen flex items-center justify-center py-20 px-6 fade-in-section">
+        <div class="text-center max-w-3xl">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+                Automação Inteligente para <span class="text-blue-600">Transformar</span> Seu Negócio
+            </h1>
+            <p class="text-xl text-gray-700 mb-10 typing-effect">
+                <span>Soluções de IA para pequenas e médias empresas.</span>
+            </p>
+            <a href="#solutions" class="cta-button bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-10 rounded-lg text-lg shadow-lg">
+                Descubra Nossas Soluções
+            </a>
+        </div>
+    </section>
+
+    <section id="solutions" class="py-20 px-6 bg-white fade-in-section">
+        <div class="container mx-auto">
+            <h2 class="section-title text-center">Nossas Soluções de IA</h2>
+            <p class="text-center text-gray-600 mb-16 max-w-2xl mx-auto text-lg">
+                Oferecemos ferramentas inovadoras para otimizar processos, aumentar a eficiência e impulsionar o crescimento da sua empresa.
+            </p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="solution-card bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl" onclick="openModal('modal-chatbot')">
+                    <div class="flex items-center justify-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-3.861 8.25-8.625 8.25S3.75 16.556 3.75 12c0-4.556 3.861-8.25 8.625-8.25S21 7.444 21 12z" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Chatbots Inteligentes</h3>
+                    <p class="text-gray-600 leading-relaxed">Atendimento ao cliente 24/7, respostas instantâneas e personalizadas...</p>
+                </div>
+
+                <div class="solution-card bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl" onclick="openModal('modal-estoque')">
+                     <div class="flex items-center justify-center w-16 h-16 bg-green-100 text-green-600 rounded-full mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10.5 11.25h3M12 17.25v-6M18.75 10.5H5.25c.963 0 1.704-.846 1.463-1.766L6 6h12l-.713 2.734c-.24.92-.98 1.766-1.937 1.766z" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Gerenciador de Estoque IA</h3>
+                    <p class="text-gray-600 leading-relaxed">Previsão de demanda, otimização de níveis de estoque e alertas...</p>
+                </div>
+
+                <div class="solution-card bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl" onclick="openModal('modal-financeiro')">
+                    <div class="flex items-center justify-center w-16 h-16 bg-purple-100 text-purple-600 rounded-full mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.75A.75.75 0 012.25 4.5h.75m0 0H21m-9 12.75h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Gerenciador Financeiro IA</h3>
+                    <p class="text-gray-600 leading-relaxed">Análise de fluxo de caixa, insights para tomada de decisão e automação...</p>
+                </div>
+                <div class="solution-card bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl" onclick="openModal('modal-marketing')">
+                    <div class="flex items-center justify-center w-16 h-16 bg-yellow-100 text-yellow-600 rounded-full mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L1.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09l2.846.813-.813 2.846a4.5 4.5 0 00-3.09 3.09zM18.25 12L16 6.75l-2.25 5.25L8.25 12l5.25 2.25L16 19.5l2.25-5.25L21.75 12z" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Automação de Marketing</h3>
+                    <p class="text-gray-600 leading-relaxed">Segmente seu público, personalize campanhas e analise resultados...</p>
+                </div>
+                <div class="solution-card bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl" onclick="openModal('modal-preditiva')">
+                    <div class="flex items-center justify-center w-16 h-16 bg-red-100 text-red-600 rounded-full mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Análise Preditiva de Dados</h3>
+                    <p class="text-gray-600 leading-relaxed">Transforme dados brutos em insights acionáveis, antecipe tendências...</p>
+                </div>
+                <div class="solution-card bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl" onclick="openModal('modal-processos')">
+                    <div class="flex items-center justify-center w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full mb-6">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-3">Otimização de Processos</h3>
+                    <p class="text-gray-600 leading-relaxed">Identifique gargalos e automatize tarefas repetitivas em diversas áreas...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 px-6 bg-gray-100 fade-in-section">
+        <div class="container mx-auto text-center max-w-3xl">
+            <h2 class="section-title">Sobre a Newis</h2>
+            <p class="text-xl text-gray-700 mb-6 leading-relaxed">
+                Somos apaixonados por tecnologia e inovação. Nossa missão é capacitar pequenas e médias empresas com o poder da Inteligência Artificial, transformando desafios complexos em oportunidades de crescimento e eficiência.
+            </p>
+            <p class="text-lg text-gray-600 leading-relaxed">
+                Acreditamos que a IA não é apenas para grandes corporações. Com as ferramentas certas e uma abordagem personalizada, podemos ajudar seu negócio a alcançar novos patamares de produtividade e sucesso.
+            </p>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 px-6 bg-blue-600 text-white fade-in-section">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-6">Pronto para Inovar?</h2>
+            <p class="text-xl mb-10 max-w-2xl mx-auto">
+                Entre em contato e descubra como nossas soluções de IA podem impulsionar seu negócio.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-8">
+                <a href="https://wa.me/5561992892582" target="_blank" rel="noopener noreferrer" class="cta-button bg-white hover:bg-gray-100 text-blue-600 font-semibold py-4 px-8 rounded-lg text-lg shadow-md flex items-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon filter brightness-0 invert-[29%] sepia-[78%] saturate-[2351%] hue-rotate-[196deg] contrast-[101%]"> Conversar no WhatsApp
+                </a>
+                <a href="mailto:neto.snoxs@gmail.com" class="cta-button bg-gray-800 hover:bg-gray-900 text-white font-semibold py-4 px-8 rounded-lg text-lg shadow-md flex items-center">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="contact-icon"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+                    Enviar um E-mail
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-8 bg-gray-800 text-gray-400 text-center">
+        <div class="container mx-auto">
+            <p>&copy; <span id="currentYear"></span> Newis. Todos os direitos reservados.</p>
+            <p class="text-sm mt-2">Desenvolvido com foco em inovação e resultados.</p>
+        </div>
+    </footer>
+
+    <div id="modal-chatbot" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeModal('modal-chatbot')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-3xl font-semibold text-gray-800 mb-4">Chatbots Inteligentes</h3>
+            <div class="modal-visual">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-blue-500"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.02 3 12c0 1.74.75 3.363 1.97 4.606L3 21l4.606-1.97A8.92 8.92 0 0012 20.25zM8.25 12h.01M11.25 12h.01M14.25 12h.01" /></svg>
+            </div>
+            <p class="text-gray-700 mb-4 leading-relaxed">Nossos chatbots com IA vão além de respostas programadas. Eles aprendem com cada interação, compreendem a intenção do usuário e oferecem soluções personalizadas, simulando uma conversa natural e eficiente para otimizar o atendimento ao cliente.</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Problemas que Solucionamos:</h4>
+            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+                <li>Demora no atendimento, gerando frustração nos clientes.</li>
+                <li>Perda de oportunidades de venda por falta de atendimento imediato.</li>
+                <li>Custos elevados com equipes de suporte para cobrir todos os horários.</li>
+                <li>Inconsistência nas informações fornecidas aos clientes.</li>
+                <li>Sobrecarga da equipe com perguntas frequentes e repetitivas.</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Por que sua Empresa Precisa:</h4>
+            <p class="text-gray-700 mb-4 leading-relaxed">No mercado ágil de hoje, clientes esperam respostas rápidas e precisas 24/7. Automatizar o atendimento inicial e as FAQs libera sua equipe para focar em casos complexos e estratégicos, aumentando a produtividade e a satisfação do cliente.</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Vantagens da Solução:</h4>
+            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
+                <li>Atendimento disponível 24 horas por dia, 7 dias por semana.</li>
+                <li>Redução significativa nos custos operacionais de atendimento.</li>
+                <li>Aumento da satisfação e fidelização de clientes.</li>
+                <li>Padronização e melhoria na qualidade das respostas.</li>
+                <li>Coleta de dados valiosos sobre as necessidades dos clientes.</li>
+                <li>Escalabilidade para atender grandes volumes de interações.</li>
+            </ul>
+            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20Chatbots%20Inteligentes." target="_blank" rel="noopener noreferrer" class="cta-button bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-base">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">
+                Fale com um Especialista
+            </a>
+        </div>
+    </div>
+
+    <div id="modal-estoque" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeModal('modal-estoque')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-3xl font-semibold text-gray-800 mb-4">Gerenciador de Estoque com IA</h3>
+            <div class="modal-visual">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-green-500"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125V14.25m-17.25 4.5h14.25m-14.25 0a1.5 1.5 0 00-1.5-1.5V5.25c0-.828.672-1.5 1.5-1.5h14.25c.828 0 1.5.672 1.5 1.5v7.5m-17.25 4.5A3.375 3.375 0 006.75 18.75h10.5a3.375 3.375 0 003.375-3.375V5.25A3.375 3.375 0 0017.25 1.875H6.75A3.375 3.375 0 003.375 5.25v10.125c0 .621.504 1.125 1.125 1.125H5.25" /></svg>
+            </div>
+            <p class="text-gray-700 mb-4 leading-relaxed">Utilize inteligência artificial para prever demandas, otimizar níveis de estoque, automatizar reposições e evitar perdas por excesso ou falta de produtos, garantindo um fluxo de mercadorias eficiente e lucrativo.</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Problemas que Solucionamos:</h4>
+            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+                <li>Perda de vendas devido à ruptura de estoque (falta de produtos).</li>
+                <li>Custos elevados com armazenamento de produtos parados (excesso de estoque).</li>
+                <li>Dificuldade em prever a demanda de forma precisa.</li>
+                <li>Processos manuais e demorados de contagem e reposição.</li>
+                <li>Desperdício de produtos perecíveis por má gestão.</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Por que sua Empresa Precisa:</h4>
+            <p class="text-gray-700 mb-4 leading-relaxed">Uma gestão de estoque ineficiente impacta diretamente seu fluxo de caixa e a satisfação do cliente. A IA analisa padrões históricos e tendências de mercado para otimizar seu inventário, reduzindo custos e maximizando suas vendas.</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Vantagens da Solução:</h4>
+            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
+                <li>Redução de custos com estoque e armazenamento.</li>
+                <li>Aumento da disponibilidade de produtos e satisfação do cliente.</li>
+                <li>Previsões de demanda mais precisas e confiáveis.</li>
+                <li>Automação de alertas e processos de reposição.</li>
+                <li>Melhoria no giro de estoque e na lucratividade.</li>
+                <li>Visão clara e em tempo real do seu inventário.</li>
+            </ul>
+            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20Gerenciador%20de%20Estoque%20com%20IA." target="_blank" rel="noopener noreferrer" class="cta-button bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-base">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">
+                Otimizar Meu Estoque
+            </a>
+        </div>
+    </div>
+
+    <div id="modal-financeiro" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeModal('modal-financeiro')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-3xl font-semibold text-gray-800 mb-4">Gerenciador Financeiro com IA</h3>
+            <div class="modal-visual">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-purple-500"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.75A.75.75 0 012.25 4.5h.75m0 0H21m-9.75 9.75H12V9.75M12 9.75L15 6.75M12 9.75L9 6.75m9.75 3l-3-3m3 3l3 3M3.75 9.75l3-3m-3 3l-3 3" /></svg>
+            </div>
+            <p class="text-gray-700 mb-4 leading-relaxed">Obtenha uma visão clara da saúde financeira da sua empresa com análises inteligentes de fluxo de caixa, projeções de receita, controle de despesas e insights para decisões estratégicas mais assertivas e lucrativas.</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Problemas que Solucionamos:</h4>
+            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+                <li>Falta de visibilidade sobre o fluxo de caixa real e projetado.</li>
+                <li>Dificuldade em identificar gargalos financeiros e oportunidades de economia.</li>
+                <li>Processos manuais de conciliação bancária e lançamento de despesas.</li>
+                <li>Decisões financeiras baseadas em intuição em vez de dados concretos.</li>
+                <li>Surpresas com despesas inesperadas ou falta de capital de giro.</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Por que sua Empresa Precisa:</h4>
+            <p class="text-gray-700 mb-4 leading-relaxed">A gestão financeira é o pilar de qualquer negócio bem-sucedido. Nossa solução de IA automatiza tarefas, fornece relatórios precisos em tempo real e ajuda a prever cenários, permitindo que você tome controle total das suas finanças.</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Vantagens da Solução:</h4>
+            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
+                <li>Visão consolidada e em tempo real das finanças da empresa.</li>
+                <li>Automação de tarefas financeiras repetitivas (conciliação, categorização).</li>
+                <li>Relatórios e dashboards intuitivos para fácil compreensão.</li>
+                <li>Melhoria na precisão das projeções financeiras.</li>
+                <li>Identificação de tendências, riscos e oportunidades de economia.</li>
+                <li>Suporte à tomada de decisão estratégica baseada em dados.</li>
+            </ul>
+            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20Gerenciador%20Financeiro%20com%20IA." target="_blank" rel="noopener noreferrer" class="cta-button bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-base">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">
+                Melhorar Minhas Finanças
+            </a>
+        </div>
+    </div>
+
+    <div id="modal-marketing" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeModal('modal-marketing')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-3xl font-semibold text-gray-800 mb-4">Automação de Marketing com IA</h3>
+            <div class="modal-visual">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-yellow-500"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /></svg>
+            </div>
+            <p class="text-gray-700 mb-4 leading-relaxed">Potencialize suas campanhas de marketing segmentando seu público com precisão, personalizando mensagens em escala, automatizando jornadas de nutrição de leads e analisando o ROI de cada ação com o poder da IA.</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Problemas que Solucionamos:</h4>
+            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+                <li>Campanhas de marketing genéricas com baixo engajamento.</li>
+                <li>Dificuldade em nutrir leads de forma personalizada e no tempo certo.</li>
+                <li>Processos manuais e demorados na gestão de campanhas multicanais.</li>
+                <li>Falta de clareza sobre o retorno de investimento (ROI) das ações de marketing.</li>
+                <li>Perda de oportunidades por não identificar os melhores leads.</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Por que sua Empresa Precisa:</h4>
+            <p class="text-gray-700 mb-4 leading-relaxed">Conectar-se com o cliente certo, na hora certa e com a mensagem certa é fundamental. A IA permite automatizar e otimizar suas estratégias de marketing, tornando-as mais eficientes, personalizadas e com resultados mensuráveis.</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Vantagens da Solução:</h4>
+            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
+                <li>Segmentação avançada de público para campanhas mais eficazes.</li>
+                <li>Personalização em massa de e-mails, anúncios e conteúdos.</li>
+                <li>Automação da jornada do cliente e nutrição de leads.</li>
+                <li>Otimização de lances em campanhas de mídia paga (PPC).</li>
+                <li>Análise preditiva do comportamento do consumidor.</li>
+                <li>Melhoria nas taxas de conversão e no ROI de marketing.</li>
+            </ul>
+            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20Automa%C3%A7%C3%A3o%20de%20Marketing%20com%20IA." target="_blank" rel="noopener noreferrer" class="cta-button bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-base">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">
+                Impulsionar Meu Marketing
+            </a>
+        </div>
+    </div>
+
+    <div id="modal-preditiva" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeModal('modal-preditiva')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-3xl font-semibold text-gray-800 mb-4">Análise Preditiva de Dados com IA</h3>
+            <div class="modal-visual">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-red-500"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h12A2.25 2.25 0 0020.25 14.25V3M3.75 21h16.5M16.5 3.75h.008v.008H16.5V3.75zM9 3.75h.008v.008H9V3.75zm-.375 0h.008v.008H8.625V3.75z" /></svg>
+            </div>
+            <p class="text-gray-700 mb-4 leading-relaxed">Transforme o grande volume de dados da sua empresa em insights acionáveis. Utilize IA para identificar padrões, prever tendências futuras, antecipar riscos e tomar decisões mais informadas e estratégicas para o crescimento do seu negócio.</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Problemas que Solucionamos:</h4>
+            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+                <li>Dificuldade em extrair valor dos dados coletados pela empresa.</li>
+                <li>Tomada de decisão baseada em suposições em vez de evidências.</li>
+                <li>Incapacidade de prever demandas futuras ou comportamento do cliente.</li>
+                <li>Perda de oportunidades por não identificar tendências de mercado a tempo.</li>
+                <li>Riscos não antecipados que impactam negativamente o negócio.</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Por que sua Empresa Precisa:</h4>
+            <p class="text-gray-700 mb-4 leading-relaxed">Em um mundo orientado por dados, a capacidade de prever o futuro é uma vantagem competitiva imensa. A análise preditiva com IA permite que sua empresa se antecipe aos eventos, otimize recursos e crie estratégias proativas.</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Vantagens da Solução:</h4>
+            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
+                <li>Previsão de vendas e demanda com maior acurácia.</li>
+                <li>Identificação de padrões de comportamento do consumidor.</li>
+                <li>Otimização de preços e estratégias de marketing.</li>
+                <li>Detecção precoce de fraudes e riscos operacionais.</li>
+                <li>Personalização da experiência do cliente com base em previsões.</li>
+                <li>Melhoria na alocação de recursos e planejamento estratégico.</li>
+            </ul>
+            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20An%C3%A1lise%20Preditiva%20de%20Dados%20com%20IA." target="_blank" rel="noopener noreferrer" class="cta-button bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-base">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">
+                Prever o Futuro do Meu Negócio
+            </a>
+        </div>
+    </div>
+
+    <div id="modal-processos" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="closeModal('modal-processos')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h3 class="text-3xl font-semibold text-gray-800 mb-4">Otimização de Processos com IA</h3>
+            <div class="modal-visual">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-indigo-500"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" /></svg>
+            </div>
+            <p class="text-gray-700 mb-4 leading-relaxed">Identifique gargalos, automatize tarefas repetitivas e manuais, e redesenhe fluxos de trabalho em diversas áreas da sua empresa utilizando IA. Aumente a eficiência operacional, reduza custos e libere sua equipe para atividades de maior valor agregado.</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Problemas que Solucionamos:</h4>
+            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+                <li>Processos lentos, burocráticos e propensos a erros humanos.</li>
+                <li>Tarefas manuais e repetitivas que consomem tempo valioso da equipe.</li>
+                <li>Falta de padronização nos fluxos de trabalho entre departamentos.</li>
+                <li>Dificuldade em identificar e eliminar gargalos operacionais.</li>
+                <li>Custos elevados devido à ineficiência dos processos atuais.</li>
+            </ul>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Por que sua Empresa Precisa:</h4>
+            <p class="text-gray-700 mb-4 leading-relaxed">A eficiência operacional é chave para a competitividade. A IA pode analisar seus processos atuais, identificar pontos de melhoria e automatizar atividades, resultando em uma operação mais ágil, econômica e escalável.</p>
+            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Vantagens da Solução:</h4>
+            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
+                <li>Redução drástica no tempo de execução de tarefas.</li>
+                <li>Minimização de erros humanos e retrabalho.</li>
+                <li>Aumento da produtividade e eficiência da equipe.</li>
+                <li>Redução de custos operacionais.</li>
+                <li>Melhoria na qualidade e consistência dos resultados.</li>
+                <li>Maior capacidade de adaptação a mudanças e crescimento.</li>
+            </ul>
+            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20Otimiza%C3%A7%C3%A3o%20de%20Processos%20com%20IA." target="_blank" rel="noopener noreferrer" class="cta-button bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-base">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">
+                Otimizar Meus Processos
+            </a>
+        </div>
+    </div>
+
+
+    <script>
+        // Atualiza o ano no rodapé
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Animação de fade-in para seções ao rolar
+        const sections = document.querySelectorAll('.fade-in-section');
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Rolagem suave para links de navegação
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // Fecha qualquer modal aberto antes de rolar
+                    document.querySelectorAll('.modal.is-open').forEach(openModal => {
+                        closeModal(openModal.id);
+                    });
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Funções para Modal
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('is-open');
+                document.body.style.overflow = 'hidden'; // Impede rolagem do fundo
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('is-open');
+                document.body.style.overflow = ''; // Restaura rolagem do fundo
+            }
+        }
+
+        // Fechar modal ao clicar fora do conteúdo ou na tecla ESC
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(event) {
+                if (event.target === modal) { // Verifica se o clique foi no fundo do modal
+                    closeModal(modal.id);
+                }
+            });
+        });
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                document.querySelectorAll('.modal.is-open').forEach(openModal => {
+                    closeModal(openModal.id);
+                });
+            }
+        });
+
+    </script>
+</body>
+</html>
