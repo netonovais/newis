@@ -125,6 +125,89 @@
             width: auto;
             color: #3b82f6; /* blue-500, pode ser ajustado por SVG */
         }
+        /* Estilos para a seção de geração de ideias com IA */
+        #ai-ideas-result {
+            background-color: #f9fafb; /* bg-gray-50 */
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            padding: 1.5rem; /* p-6 */
+            border-radius: 0.5rem; /* rounded-lg */
+            margin-top: 1.5rem; /* mt-6 */
+            min-height: 100px;
+        }
+        #ai-ideas-result ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+        #ai-ideas-result li {
+            margin-bottom: 0.75rem;
+        }
+        /* Estilos para exemplos de IA nos modais */
+        .ai-example-result-modal {
+            margin-top: 0.75rem; /* mt-3 */
+            color: #374151; /* text-gray-700 */
+            background-color: #f9fafb; /* bg-gray-50 */
+            padding: 0.75rem; /* p-3 */
+            border-radius: 0.375rem; /* rounded-md */
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            min-height: 50px;
+        }
+        #loading-indicator, .loading-example-modal, #loading-ai-chat {
+            display: none; /* Escondido por padrão */
+            text-align: center;
+            padding: 1rem;
+            color: #3b82f6; /* blue-500 */
+        }
+        .loading-example-modal, #loading-ai-chat { 
+             padding: 0.5rem;
+             font-size: 0.875rem; /* text-sm */
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #3b82f6; /* blue-500 */
+            animation: spin 1s ease infinite;
+            margin: 0 auto 0.5rem auto;
+        }
+        .spinner-small { /* Spinner menor para modais e chat */
+            width: 24px;
+            height: 24px;
+            border-width: 3px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Estilos para a área de chat da IA */
+        #ai-chat-area {
+            background-color: #f9fafb; /* bg-gray-50 */
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            padding: 1rem; /* p-4 */
+            border-radius: 0.5rem; /* rounded-lg */
+            height: 16rem; /* h-64 */
+            overflow-y: auto;
+            margin-bottom: 1rem; /* mb-4 */
+        }
+        .chat-message {
+            margin-bottom: 0.75rem; /* mb-3 */
+            padding: 0.5rem 0.75rem; /* p-2 px-3 */
+            border-radius: 0.375rem; /* rounded-md */
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .user-message {
+            background-color: #dbeafe; /* blue-100 */
+            color: #1e40af; /* blue-800 */
+            margin-left: auto;
+            text-align: right;
+        }
+        .ai-message {
+            background-color: #e0e7ff; /* indigo-100 */
+            color: #3730a3; /* indigo-800 */
+            margin-right: auto;
+            text-align: left;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased">
@@ -136,6 +219,8 @@
                 <ul class="flex space-x-6">
                     <li><a href="#home" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Início</a></li>
                     <li><a href="#solutions" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Soluções</a></li>
+                    <li><a href="#ai-idea-generator" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">✨ Ideias</a></li>
+                    <li><a href="#ask-newis-ai" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">✨ Pergunte à IA</a></li>
                     <li><a href="#about" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Sobre</a></li>
                     <li><a href="#contact" class="text-gray-700 hover:text-blue-600 transition-colors font-medium">Contato</a></li>
                 </ul>
@@ -187,7 +272,7 @@
                     <h3 class="text-2xl font-semibold text-gray-800 mb-3">Gerenciador Financeiro IA</h3>
                     <p class="text-gray-600 leading-relaxed">Análise de fluxo de caixa, insights para tomada de decisão e automação...</p>
                 </div>
-                <div class="solution-card bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl" onclick="openModal('modal-marketing')">
+                 <div class="solution-card bg-gray-50 p-8 rounded-xl shadow-lg hover:shadow-2xl" onclick="openModal('modal-marketing')">
                     <div class="flex items-center justify-center w-16 h-16 bg-yellow-100 text-yellow-600 rounded-full mb-6">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L1.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09l2.846.813-.813 2.846a4.5 4.5 0 00-3.09 3.09zM18.25 12L16 6.75l-2.25 5.25L8.25 12l5.25 2.25L16 19.5l2.25-5.25L21.75 12z" /></svg>
                     </div>
@@ -212,8 +297,50 @@
         </div>
     </section>
 
-    <section id="about" class="py-20 px-6 bg-gray-100 fade-in-section">
-        <div class="container mx-auto text-center max-w-3xl">
+    <section id="ai-idea-generator" class="py-20 px-6 bg-gray-100 fade-in-section">
+        <div class="container mx-auto max-w-3xl">
+            <h2 class="section-title text-center">✨ Descubra o Potencial da IA para Seu Negócio</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto text-lg">
+                Não sabe por onde começar? Descreva seu desafio ou tipo de negócio e nossa IA irá sugerir soluções de automação personalizadas!
+            </p>
+            <div class="bg-white p-8 rounded-xl shadow-xl">
+                <textarea id="business-problem-input" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow" rows="4" placeholder="Ex: Sou dono de uma pequena loja de varejo e tenho dificuldades com o controle de estoque e atendimento ao cliente. Também gostaria de aumentar minhas vendas online."></textarea>
+                <button id="generate-ideas-button" class="cta-button bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg mt-4 w-full md:w-auto text-lg shadow-md">
+                    Gerar Ideias com IA ✨
+                </button>
+                <div id="loading-indicator" class="mt-6">
+                    <div class="spinner"></div>
+                    <p>Gerando ideias personalizadas para você...</p>
+                </div>
+                <div id="ai-ideas-result" class="mt-6">
+                    </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="ask-newis-ai" class="py-20 px-6 bg-white fade-in-section"> <div class="container mx-auto max-w-3xl">
+            <h2 class="section-title text-center">✨ Pergunte à IA da Newis</h2>
+            <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto text-lg">
+                Tem alguma dúvida sobre nossas soluções de IA ou como podemos ajudar seu negócio? Pergunte aqui!
+            </p>
+            <div class="bg-gray-50 p-8 rounded-xl shadow-xl"> <div id="ai-chat-area">
+                    <div class="ai-message chat-message">
+                        <p class="text-sm"><em>Olá! Sou a assistente virtual da Newis. Como posso ajudar você a entender nossas soluções de IA hoje?</em></p>
+                    </div>
+                </div>
+                <textarea id="user-ai-question" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow" rows="3" placeholder="Digite sua pergunta sobre nossas soluções..."></textarea>
+                <button id="ask-ai-button" class="cta-button bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg mt-4 w-full md:w-auto text-lg shadow-md">
+                    Perguntar à IA
+                </button>
+                <div id="loading-ai-chat" class="mt-4">
+                    <div class="spinner spinner-small"></div>
+                    <p class="text-center text-sm text-gray-600">A IA da Newis está pensando...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-20 px-6 bg-gray-100 fade-in-section"> <div class="container mx-auto text-center max-w-3xl">
             <h2 class="section-title">Sobre a Newis</h2>
             <p class="text-xl text-gray-700 mb-6 leading-relaxed">
                 Somos apaixonados por tecnologia e inovação. Nossa missão é capacitar pequenas e médias empresas com o poder da Inteligência Artificial, transformando desafios complexos em oportunidades de crescimento e eficiência.
@@ -260,211 +387,143 @@
             </div>
             <p class="text-gray-700 mb-4 leading-relaxed">Nossos chatbots com IA vão além de respostas programadas. Eles aprendem com cada interação, compreendem a intenção do usuário e oferecem soluções personalizadas, simulando uma conversa natural e eficiente para otimizar o atendimento ao cliente.</p>
             <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Problemas que Solucionamos:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
-                <li>Demora no atendimento, gerando frustração nos clientes.</li>
-                <li>Perda de oportunidades de venda por falta de atendimento imediato.</li>
-                <li>Custos elevados com equipes de suporte para cobrir todos os horários.</li>
-                <li>Inconsistência nas informações fornecidas aos clientes.</li>
-                <li>Sobrecarga da equipe com perguntas frequentes e repetitivas.</li>
-            </ul>
+            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1"><li>Demora no atendimento...</li></ul>
             <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Por que sua Empresa Precisa:</h4>
-            <p class="text-gray-700 mb-4 leading-relaxed">No mercado ágil de hoje, clientes esperam respostas rápidas e precisas 24/7. Automatizar o atendimento inicial e as FAQs libera sua equipe para focar em casos complexos e estratégicos, aumentando a produtividade e a satisfação do cliente.</p>
+            <p class="text-gray-700 mb-4 leading-relaxed">No mercado ágil de hoje...</p>
             <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Vantagens da Solução:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
-                <li>Atendimento disponível 24 horas por dia, 7 dias por semana.</li>
-                <li>Redução significativa nos custos operacionais de atendimento.</li>
-                <li>Aumento da satisfação e fidelização de clientes.</li>
-                <li>Padronização e melhoria na qualidade das respostas.</li>
-                <li>Coleta de dados valiosos sobre as necessidades dos clientes.</li>
-                <li>Escalabilidade para atender grandes volumes de interações.</li>
-            </ul>
-            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20Chatbots%20Inteligentes." target="_blank" rel="noopener noreferrer" class="cta-button bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-base">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">
-                Fale com um Especialista
+            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1"><li>Atendimento disponível 24 horas...</li></ul>
+
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <h4 class="text-xl font-semibold text-gray-800 mb-3">✨ Personalize esta Solução para Você</h4>
+                <p class="text-gray-600 mb-3 text-sm">Descreva brevemente seu tipo de negócio ou desafio específico para vermos um exemplo prático gerado por IA.</p>
+                <textarea id="modal-input-chatbot" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" rows="2" placeholder="Ex: Cafeteria pequena, e-commerce de moda, etc."></textarea>
+                <button id="generate-example-chatbot" data-solution-name="Chatbots Inteligentes" class="cta-button bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-md mt-3 text-sm w-full md:w-auto">
+                    Gerar Exemplo com IA ✨
+                </button>
+                <div id="loading-example-chatbot" class="loading-example-modal mt-3">
+                    <div class="spinner spinner-small"></div>
+                    <p class="text-sm">Gerando exemplo...</p>
+                </div>
+                <div id="ai-example-result-chatbot" class="ai-example-result-modal">
+                    </div>
+            </div>
+
+            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20Chatbots%20Inteligentes." target="_blank" rel="noopener noreferrer" class="block w-full text-center cta-button bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg mt-6 text-base">
+                Fale com um Especialista sobre Chatbots
             </a>
         </div>
     </div>
 
     <div id="modal-estoque" class="modal">
         <div class="modal-content">
-            <button class="modal-close-btn" onclick="closeModal('modal-estoque')">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+            <button class="modal-close-btn" onclick="closeModal('modal-estoque')">...</button>
             <h3 class="text-3xl font-semibold text-gray-800 mb-4">Gerenciador de Estoque com IA</h3>
-            <div class="modal-visual">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-green-500"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.125-.504 1.125-1.125V14.25m-17.25 4.5h14.25m-14.25 0a1.5 1.5 0 00-1.5-1.5V5.25c0-.828.672-1.5 1.5-1.5h14.25c.828 0 1.5.672 1.5 1.5v7.5m-17.25 4.5A3.375 3.375 0 006.75 18.75h10.5a3.375 3.375 0 003.375-3.375V5.25A3.375 3.375 0 0017.25 1.875H6.75A3.375 3.375 0 003.375 5.25v10.125c0 .621.504 1.125 1.125 1.125H5.25" /></svg>
+            <div class="modal-visual"><svg class="w-16 h-16 text-green-500">...</svg></div>
+            <p>...</p>
+             <div class="mt-8 pt-6 border-t border-gray-200">
+                <h4 class="text-xl font-semibold text-gray-800 mb-3">✨ Personalize esta Solução para Você</h4>
+                <p class="text-gray-600 mb-3 text-sm">Descreva brevemente seu tipo de negócio ou desafio específico para vermos um exemplo prático gerado por IA.</p>
+                <textarea id="modal-input-estoque" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" rows="2" placeholder="Ex: Loja de eletrônicos, supermercado, etc."></textarea>
+                <button id="generate-example-estoque" data-solution-name="Gerenciador de Estoque com IA" class="cta-button bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-md mt-3 text-sm w-full md:w-auto">
+                    Gerar Exemplo com IA ✨
+                </button>
+                <div id="loading-example-estoque" class="loading-example-modal mt-3">
+                    <div class="spinner spinner-small"></div>
+                    <p class="text-sm">Gerando exemplo...</p>
+                </div>
+                <div id="ai-example-result-estoque" class="ai-example-result-modal"></div>
             </div>
-            <p class="text-gray-700 mb-4 leading-relaxed">Utilize inteligência artificial para prever demandas, otimizar níveis de estoque, automatizar reposições e evitar perdas por excesso ou falta de produtos, garantindo um fluxo de mercadorias eficiente e lucrativo.</p>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Problemas que Solucionamos:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
-                <li>Perda de vendas devido à ruptura de estoque (falta de produtos).</li>
-                <li>Custos elevados com armazenamento de produtos parados (excesso de estoque).</li>
-                <li>Dificuldade em prever a demanda de forma precisa.</li>
-                <li>Processos manuais e demorados de contagem e reposição.</li>
-                <li>Desperdício de produtos perecíveis por má gestão.</li>
-            </ul>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Por que sua Empresa Precisa:</h4>
-            <p class="text-gray-700 mb-4 leading-relaxed">Uma gestão de estoque ineficiente impacta diretamente seu fluxo de caixa e a satisfação do cliente. A IA analisa padrões históricos e tendências de mercado para otimizar seu inventário, reduzindo custos e maximizando suas vendas.</p>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Vantagens da Solução:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
-                <li>Redução de custos com estoque e armazenamento.</li>
-                <li>Aumento da disponibilidade de produtos e satisfação do cliente.</li>
-                <li>Previsões de demanda mais precisas e confiáveis.</li>
-                <li>Automação de alertas e processos de reposição.</li>
-                <li>Melhoria no giro de estoque e na lucratividade.</li>
-                <li>Visão clara e em tempo real do seu inventário.</li>
-            </ul>
-            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20Gerenciador%20de%20Estoque%20com%20IA." target="_blank" rel="noopener noreferrer" class="cta-button bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-base">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">
-                Otimizar Meu Estoque
-            </a>
+            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20Gerenciador%20de%20Estoque%20com%20IA." class="block w-full text-center cta-button bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg mt-6 text-base"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="hidden contact-icon whatsapp-icon-white"> Otimizar Meu Estoque</a>
         </div>
     </div>
-
     <div id="modal-financeiro" class="modal">
         <div class="modal-content">
-            <button class="modal-close-btn" onclick="closeModal('modal-financeiro')">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+            <button class="modal-close-btn" onclick="closeModal('modal-financeiro')">...</button>
             <h3 class="text-3xl font-semibold text-gray-800 mb-4">Gerenciador Financeiro com IA</h3>
-            <div class="modal-visual">
-                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-purple-500"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.75A.75.75 0 012.25 4.5h.75m0 0H21m-9.75 9.75H12V9.75M12 9.75L15 6.75M12 9.75L9 6.75m9.75 3l-3-3m3 3l3 3M3.75 9.75l3-3m-3 3l-3 3" /></svg>
+            <div class="modal-visual"><svg class="w-16 h-16 text-purple-500">...</svg></div>
+            <p>...</p>
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <h4 class="text-xl font-semibold text-gray-800 mb-3">✨ Personalize esta Solução para Você</h4>
+                <p class="text-gray-600 mb-3 text-sm">Descreva brevemente seu tipo de negócio ou desafio específico para vermos um exemplo prático gerado por IA.</p>
+                <textarea id="modal-input-financeiro" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" rows="2" placeholder="Ex: Startup de tecnologia, consultoria, etc."></textarea>
+                <button id="generate-example-financeiro" data-solution-name="Gerenciador Financeiro com IA" class="cta-button bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-md mt-3 text-sm w-full md:w-auto">
+                    Gerar Exemplo com IA ✨
+                </button>
+                <div id="loading-example-financeiro" class="loading-example-modal mt-3">
+                    <div class="spinner spinner-small"></div>
+                    <p class="text-sm">Gerando exemplo...</p>
+                </div>
+                <div id="ai-example-result-financeiro" class="ai-example-result-modal"></div>
             </div>
-            <p class="text-gray-700 mb-4 leading-relaxed">Obtenha uma visão clara da saúde financeira da sua empresa com análises inteligentes de fluxo de caixa, projeções de receita, controle de despesas e insights para decisões estratégicas mais assertivas e lucrativas.</p>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Problemas que Solucionamos:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
-                <li>Falta de visibilidade sobre o fluxo de caixa real e projetado.</li>
-                <li>Dificuldade em identificar gargalos financeiros e oportunidades de economia.</li>
-                <li>Processos manuais de conciliação bancária e lançamento de despesas.</li>
-                <li>Decisões financeiras baseadas em intuição em vez de dados concretos.</li>
-                <li>Surpresas com despesas inesperadas ou falta de capital de giro.</li>
-            </ul>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Por que sua Empresa Precisa:</h4>
-            <p class="text-gray-700 mb-4 leading-relaxed">A gestão financeira é o pilar de qualquer negócio bem-sucedido. Nossa solução de IA automatiza tarefas, fornece relatórios precisos em tempo real e ajuda a prever cenários, permitindo que você tome controle total das suas finanças.</p>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Vantagens da Solução:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
-                <li>Visão consolidada e em tempo real das finanças da empresa.</li>
-                <li>Automação de tarefas financeiras repetitivas (conciliação, categorização).</li>
-                <li>Relatórios e dashboards intuitivos para fácil compreensão.</li>
-                <li>Melhoria na precisão das projeções financeiras.</li>
-                <li>Identificação de tendências, riscos e oportunidades de economia.</li>
-                <li>Suporte à tomada de decisão estratégica baseada em dados.</li>
-            </ul>
-            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20Gerenciador%20Financeiro%20com%20IA." target="_blank" rel="noopener noreferrer" class="cta-button bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-base">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">
-                Melhorar Minhas Finanças
-            </a>
+            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20o%20Gerenciador%20Financeiro%20com%20IA." class="block w-full text-center cta-button bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg mt-6 text-base"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="hidden contact-icon whatsapp-icon-white"> Melhorar Minhas Finanças</a>
         </div>
     </div>
-
     <div id="modal-marketing" class="modal">
         <div class="modal-content">
-            <button class="modal-close-btn" onclick="closeModal('modal-marketing')">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+            <button class="modal-close-btn" onclick="closeModal('modal-marketing')">...</button>
             <h3 class="text-3xl font-semibold text-gray-800 mb-4">Automação de Marketing com IA</h3>
-            <div class="modal-visual">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-yellow-500"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /></svg>
+            <div class="modal-visual"><svg class="w-16 h-16 text-yellow-500">...</svg></div>
+            <p>...</p>
+             <div class="mt-8 pt-6 border-t border-gray-200">
+                <h4 class="text-xl font-semibold text-gray-800 mb-3">✨ Personalize esta Solução para Você</h4>
+                <p class="text-gray-600 mb-3 text-sm">Descreva brevemente seu tipo de negócio ou desafio específico para vermos um exemplo prático gerado por IA.</p>
+                <textarea id="modal-input-marketing" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" rows="2" placeholder="Ex: Agência de marketing digital, infoprodutor, etc."></textarea>
+                <button id="generate-example-marketing" data-solution-name="Automação de Marketing com IA" class="cta-button bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-md mt-3 text-sm w-full md:w-auto">
+                    Gerar Exemplo com IA ✨
+                </button>
+                <div id="loading-example-marketing" class="loading-example-modal mt-3">
+                    <div class="spinner spinner-small"></div>
+                    <p class="text-sm">Gerando exemplo...</p>
+                </div>
+                <div id="ai-example-result-marketing" class="ai-example-result-modal"></div>
             </div>
-            <p class="text-gray-700 mb-4 leading-relaxed">Potencialize suas campanhas de marketing segmentando seu público com precisão, personalizando mensagens em escala, automatizando jornadas de nutrição de leads e analisando o ROI de cada ação com o poder da IA.</p>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Problemas que Solucionamos:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
-                <li>Campanhas de marketing genéricas com baixo engajamento.</li>
-                <li>Dificuldade em nutrir leads de forma personalizada e no tempo certo.</li>
-                <li>Processos manuais e demorados na gestão de campanhas multicanais.</li>
-                <li>Falta de clareza sobre o retorno de investimento (ROI) das ações de marketing.</li>
-                <li>Perda de oportunidades por não identificar os melhores leads.</li>
-            </ul>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Por que sua Empresa Precisa:</h4>
-            <p class="text-gray-700 mb-4 leading-relaxed">Conectar-se com o cliente certo, na hora certa e com a mensagem certa é fundamental. A IA permite automatizar e otimizar suas estratégias de marketing, tornando-as mais eficientes, personalizadas e com resultados mensuráveis.</p>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Vantagens da Solução:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
-                <li>Segmentação avançada de público para campanhas mais eficazes.</li>
-                <li>Personalização em massa de e-mails, anúncios e conteúdos.</li>
-                <li>Automação da jornada do cliente e nutrição de leads.</li>
-                <li>Otimização de lances em campanhas de mídia paga (PPC).</li>
-                <li>Análise preditiva do comportamento do consumidor.</li>
-                <li>Melhoria nas taxas de conversão e no ROI de marketing.</li>
-            </ul>
-            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20Automa%C3%A7%C3%A3o%20de%20Marketing%20com%20IA." target="_blank" rel="noopener noreferrer" class="cta-button bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-base">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">
-                Impulsionar Meu Marketing
-            </a>
+            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20Automa%C3%A7%C3%A3o%20de%20Marketing%20com%20IA." class="block w-full text-center cta-button bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-lg mt-6 text-base"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="hidden contact-icon whatsapp-icon-white"> Impulsionar Meu Marketing</a>
         </div>
     </div>
-
     <div id="modal-preditiva" class="modal">
         <div class="modal-content">
-            <button class="modal-close-btn" onclick="closeModal('modal-preditiva')">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+            <button class="modal-close-btn" onclick="closeModal('modal-preditiva')">...</button>
             <h3 class="text-3xl font-semibold text-gray-800 mb-4">Análise Preditiva de Dados com IA</h3>
-            <div class="modal-visual">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-red-500"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h12A2.25 2.25 0 0020.25 14.25V3M3.75 21h16.5M16.5 3.75h.008v.008H16.5V3.75zM9 3.75h.008v.008H9V3.75zm-.375 0h.008v.008H8.625V3.75z" /></svg>
+            <div class="modal-visual"><svg class="w-16 h-16 text-red-500">...</svg></div>
+            <p>...</p>
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <h4 class="text-xl font-semibold text-gray-800 mb-3">✨ Personalize esta Solução para Você</h4>
+                <p class="text-gray-600 mb-3 text-sm">Descreva brevemente seu tipo de negócio ou desafio específico para vermos um exemplo prático gerado por IA.</p>
+                <textarea id="modal-input-preditiva" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" rows="2" placeholder="Ex: Empresa de SaaS, setor financeiro, etc."></textarea>
+                <button id="generate-example-preditiva" data-solution-name="Análise Preditiva de Dados com IA" class="cta-button bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-md mt-3 text-sm w-full md:w-auto">
+                    Gerar Exemplo com IA ✨
+                </button>
+                <div id="loading-example-preditiva" class="loading-example-modal mt-3">
+                    <div class="spinner spinner-small"></div>
+                    <p class="text-sm">Gerando exemplo...</p>
+                </div>
+                <div id="ai-example-result-preditiva" class="ai-example-result-modal"></div>
             </div>
-            <p class="text-gray-700 mb-4 leading-relaxed">Transforme o grande volume de dados da sua empresa em insights acionáveis. Utilize IA para identificar padrões, prever tendências futuras, antecipar riscos e tomar decisões mais informadas e estratégicas para o crescimento do seu negócio.</p>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Problemas que Solucionamos:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
-                <li>Dificuldade em extrair valor dos dados coletados pela empresa.</li>
-                <li>Tomada de decisão baseada em suposições em vez de evidências.</li>
-                <li>Incapacidade de prever demandas futuras ou comportamento do cliente.</li>
-                <li>Perda de oportunidades por não identificar tendências de mercado a tempo.</li>
-                <li>Riscos não antecipados que impactam negativamente o negócio.</li>
-            </ul>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Por que sua Empresa Precisa:</h4>
-            <p class="text-gray-700 mb-4 leading-relaxed">Em um mundo orientado por dados, a capacidade de prever o futuro é uma vantagem competitiva imensa. A análise preditiva com IA permite que sua empresa se antecipe aos eventos, otimize recursos e crie estratégias proativas.</p>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Vantagens da Solução:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
-                <li>Previsão de vendas e demanda com maior acurácia.</li>
-                <li>Identificação de padrões de comportamento do consumidor.</li>
-                <li>Otimização de preços e estratégias de marketing.</li>
-                <li>Detecção precoce de fraudes e riscos operacionais.</li>
-                <li>Personalização da experiência do cliente com base em previsões.</li>
-                <li>Melhoria na alocação de recursos e planejamento estratégico.</li>
-            </ul>
-            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20An%C3%A1lise%20Preditiva%20de%20Dados%20com%20IA." target="_blank" rel="noopener noreferrer" class="cta-button bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-base">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">
-                Prever o Futuro do Meu Negócio
-            </a>
+            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20An%C3%A1lise%20Preditiva%20de%20Dados%20com%20IA." class="block w-full text-center cta-button bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg mt-6 text-base"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="hidden contact-icon whatsapp-icon-white"> Prever o Futuro do Meu Negócio</a>
         </div>
     </div>
-
     <div id="modal-processos" class="modal">
         <div class="modal-content">
-            <button class="modal-close-btn" onclick="closeModal('modal-processos')">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
+            <button class="modal-close-btn" onclick="closeModal('modal-processos')">...</button>
             <h3 class="text-3xl font-semibold text-gray-800 mb-4">Otimização de Processos com IA</h3>
-            <div class="modal-visual">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-16 h-16 text-indigo-500"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" /></svg>
+            <div class="modal-visual"><svg class="w-16 h-16 text-indigo-500">...</svg></div>
+            <p>...</p>
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <h4 class="text-xl font-semibold text-gray-800 mb-3">✨ Personalize esta Solução para Você</h4>
+                <p class="text-gray-600 mb-3 text-sm">Descreva brevemente seu tipo de negócio ou desafio específico para vermos um exemplo prático gerado por IA.</p>
+                <textarea id="modal-input-processos" class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" rows="2" placeholder="Ex: Indústria, escritório de advocacia, etc."></textarea>
+                <button id="generate-example-processos" data-solution-name="Otimização de Processos com IA" class="cta-button bg-teal-500 hover:bg-teal-600 text-white font-semibold py-2 px-4 rounded-md mt-3 text-sm w-full md:w-auto">
+                    Gerar Exemplo com IA ✨
+                </button>
+                <div id="loading-example-processos" class="loading-example-modal mt-3">
+                    <div class="spinner spinner-small"></div>
+                    <p class="text-sm">Gerando exemplo...</p>
+                </div>
+                <div id="ai-example-result-processos" class="ai-example-result-modal"></div>
             </div>
-            <p class="text-gray-700 mb-4 leading-relaxed">Identifique gargalos, automatize tarefas repetitivas e manuais, e redesenhe fluxos de trabalho em diversas áreas da sua empresa utilizando IA. Aumente a eficiência operacional, reduza custos e libere sua equipe para atividades de maior valor agregado.</p>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Problemas que Solucionamos:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
-                <li>Processos lentos, burocráticos e propensos a erros humanos.</li>
-                <li>Tarefas manuais e repetitivas que consomem tempo valioso da equipe.</li>
-                <li>Falta de padronização nos fluxos de trabalho entre departamentos.</li>
-                <li>Dificuldade em identificar e eliminar gargalos operacionais.</li>
-                <li>Custos elevados devido à ineficiência dos processos atuais.</li>
-            </ul>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Por que sua Empresa Precisa:</h4>
-            <p class="text-gray-700 mb-4 leading-relaxed">A eficiência operacional é chave para a competitividade. A IA pode analisar seus processos atuais, identificar pontos de melhoria e automatizar atividades, resultando em uma operação mais ágil, econômica e escalável.</p>
-            <h4 class="text-xl font-semibold text-gray-800 mt-6 mb-2">Vantagens da Solução:</h4>
-            <ul class="list-disc list-inside text-gray-600 mb-6 space-y-1">
-                <li>Redução drástica no tempo de execução de tarefas.</li>
-                <li>Minimização de erros humanos e retrabalho.</li>
-                <li>Aumento da produtividade e eficiência da equipe.</li>
-                <li>Redução de custos operacionais.</li>
-                <li>Melhoria na qualidade e consistência dos resultados.</li>
-                <li>Maior capacidade de adaptação a mudanças e crescimento.</li>
-            </ul>
-            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20Otimiza%C3%A7%C3%A3o%20de%20Processos%20com%20IA." target="_blank" rel="noopener noreferrer" class="cta-button bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-base">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">
-                Otimizar Meus Processos
-            </a>
+            <a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20Otimiza%C3%A7%C3%A3o%20de%20Processos%20com%20IA." class="block w-full text-center cta-button bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg mt-6 text-base"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="hidden contact-icon whatsapp-icon-white"> Otimizar Meus Processos</a>
         </div>
     </div>
-
 
     <script>
         // Atualiza o ano no rodapé
@@ -498,7 +557,6 @@
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
-                    // Fecha qualquer modal aberto antes de rolar
                     document.querySelectorAll('.modal.is-open').forEach(openModal => {
                         closeModal(openModal.id);
                     });
@@ -514,7 +572,7 @@
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.add('is-open');
-                document.body.style.overflow = 'hidden'; // Impede rolagem do fundo
+                document.body.style.overflow = 'hidden';
             }
         }
 
@@ -522,14 +580,20 @@
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.remove('is-open');
-                document.body.style.overflow = ''; // Restaura rolagem do fundo
+                document.body.style.overflow = '';
+                const solutionType = modalId.replace('modal-', '');
+                const inputField = document.getElementById(`modal-input-${solutionType}`);
+                const resultField = document.getElementById(`ai-example-result-${solutionType}`);
+                const loadingField = document.getElementById(`loading-example-${solutionType}`);
+                if (inputField) inputField.value = '';
+                if (resultField) resultField.innerHTML = '';
+                if (loadingField) loadingField.style.display = 'none';
             }
         }
 
-        // Fechar modal ao clicar fora do conteúdo ou na tecla ESC
         document.querySelectorAll('.modal').forEach(modal => {
             modal.addEventListener('click', function(event) {
-                if (event.target === modal) { // Verifica se o clique foi no fundo do modal
+                if (event.target === modal) {
                     closeModal(modal.id);
                 }
             });
@@ -542,6 +606,129 @@
             }
         });
 
+        // --- Lógica para Geração de Ideias com IA (Seção Principal) ---
+        const generateIdeasButton = document.getElementById('generate-ideas-button');
+        const businessProblemInput = document.getElementById('business-problem-input');
+        const ideasResultDiv = document.getElementById('ai-ideas-result');
+        const loadingIndicator = document.getElementById('loading-indicator');
+
+        if (generateIdeasButton) {
+            generateIdeasButton.addEventListener('click', async () => {
+                const userInput = businessProblemInput.value.trim();
+                if (!userInput) {
+                    ideasResultDiv.innerHTML = '<p class="text-red-500">Por favor, descreva seu negócio ou desafio para gerarmos ideias.</p>';
+                    return;
+                }
+                loadingIndicator.style.display = 'block';
+                ideasResultDiv.innerHTML = '';
+                const prompt = `Aja como um consultor especialista em automação com Inteligência Artificial para pequenas e médias empresas. Um cliente potencial descreveu seu negócio ou desafio da seguinte forma: "${userInput}". Com base nisso, gere 3 a 4 ideias concisas e práticas de como a automação com IA pode ajudar esta empresa. Para cada ideia, inclua um título curto em negrito (<strong>Título</strong>) e uma breve explicação (1-2 frases) do benefício. Formate toda a resposta como uma lista HTML não ordenada (<ul><li>...</li></ul>). Certifique-se de que a resposta seja apenas o HTML da lista.`;
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = "AIzaSyCyD3x2zCQQn9kP5dA2Bpx0n6KkMUk5DE4";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                try {
+                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (!response.ok) { const errorData = await response.json(); throw new Error(`Erro API: ${response.status}. ${errorData.error ? errorData.error.message : 'Detalhes não disponíveis.'}`); }
+                    const result = await response.json();
+                    if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
+                        const generatedHtml = result.candidates[0].content.parts[0].text;
+                        ideasResultDiv.innerHTML = generatedHtml.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+                        const ctaHtml = `<div class="mt-6 text-center"><a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20gostei%20das%20ideias%20geradas%20pela%20IA%20e%20gostaria%20de%20conversar%20mais%20sobre%20elas." target="_blank" rel="noopener noreferrer" class="cta-button bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg inline-flex items-center text-lg shadow-md"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white">Fale Conosco sobre estas Ideias</a></div>`;
+                        ideasResultDiv.insertAdjacentHTML('beforeend', ctaHtml);
+                    } else { ideasResultDiv.innerHTML = '<p class="text-red-500">Não foi possível gerar ideias. Tente mais tarde.</p>';}
+                } catch (error) { ideasResultDiv.innerHTML = `<p class="text-red-500">Erro ao gerar ideias: ${error.message}</p>`; } finally { loadingIndicator.style.display = 'none'; }
+            });
+        }
+
+        // --- Lógica para Geração de Exemplos com IA (Nos Modais) ---
+        const solutionModalButtons = [
+            'generate-example-chatbot', 'generate-example-estoque', 'generate-example-financeiro',
+            'generate-example-marketing', 'generate-example-preditiva', 'generate-example-processos'
+        ];
+        solutionModalButtons.forEach(buttonId => {
+            const button = document.getElementById(buttonId);
+            if (button) {
+                button.addEventListener('click', async () => {
+                    const solutionType = buttonId.replace('generate-example-', '');
+                    const solutionName = button.dataset.solutionName;
+                    const userInputField = document.getElementById(`modal-input-${solutionType}`);
+                    const resultDiv = document.getElementById(`ai-example-result-${solutionType}`);
+                    const loadingDiv = document.getElementById(`loading-example-${solutionType}`);
+                    const userBusinessDescription = userInputField.value.trim();
+                    if (!userBusinessDescription) { resultDiv.innerHTML = '<p class="text-red-500 text-sm">Por favor, descreva seu negócio ou desafio.</p>'; return; }
+                    loadingDiv.style.display = 'block'; resultDiv.innerHTML = '';
+                    const prompt = `Como um consultor de IA da Newis, para a solução "${solutionName}", forneça um exemplo prático e conciso (2-3 frases) de como ela poderia ser aplicada a um(a) "${userBusinessDescription}", destacando um benefício chave. Formate a resposta como um parágrafo simples de texto, sem títulos ou formatação HTML complexa, apenas o texto do exemplo.`;
+                    let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                    const payload = { contents: chatHistory }; const apiKey = "AIzaSyCyD3x2zCQQn9kP5dA2Bpx0n6KkMUk5DE4"; const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    try {
+                        const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                        if (!response.ok) { const errorData = await response.json(); throw new Error(`Erro API: ${response.status}. ${errorData.error ? errorData.error.message : 'Detalhes não disponíveis.'}`); }
+                        const result = await response.json();
+                        if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
+                            const generatedText = result.candidates[0].content.parts[0].text;
+                            resultDiv.innerHTML = `<p>${generatedText.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")}</p>`;
+                            const ctaModalHtml = `<div class="mt-4 text-center"><a href="https://wa.me/5561992892582?text=Ol%C3%A1%2C%20vi%20um%20exemplo%20de%20IA%20para%20${encodeURIComponent(solutionName)}%20aplicado%20a%20${encodeURIComponent(userBusinessDescription)}%20e%20gostaria%20de%20saber%20mais." target="_blank" rel="noopener noreferrer" class="cta-button bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-md inline-flex items-center text-sm shadow-md"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon" class="contact-icon whatsapp-icon-white" style="width:16px; height:16px; margin-right:6px;">Discutir este Exemplo</a></div>`;
+                            resultDiv.insertAdjacentHTML('beforeend', ctaModalHtml);
+                        } else { resultDiv.innerHTML = '<p class="text-red-500 text-sm">Não foi possível gerar o exemplo. Tente mais tarde.</p>'; }
+                    } catch (error) { resultDiv.innerHTML = `<p class="text-red-500 text-sm">Erro ao gerar exemplo: ${error.message}</p>`; } finally { loadingDiv.style.display = 'none'; }
+                });
+            }
+        });
+
+        // --- Lógica para Chat com IA da Newis ---
+        const askAiButton = document.getElementById('ask-ai-button');
+        const userAiQuestionInput = document.getElementById('user-ai-question');
+        const aiChatArea = document.getElementById('ai-chat-area');
+        const loadingAiChat = document.getElementById('loading-ai-chat');
+
+        if (askAiButton) {
+            askAiButton.addEventListener('click', async () => {
+                const userQuestion = userAiQuestionInput.value.trim();
+                if (!userQuestion) return;
+
+                // Display user question
+                const userMessageDiv = document.createElement('div');
+                userMessageDiv.classList.add('chat-message', 'user-message');
+                userMessageDiv.innerHTML = `<p>${userQuestion.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>`; // Basic sanitization
+                aiChatArea.appendChild(userMessageDiv);
+                userAiQuestionInput.value = ''; // Clear input
+                aiChatArea.scrollTop = aiChatArea.scrollHeight; // Scroll to bottom
+
+                loadingAiChat.style.display = 'block';
+
+                const prompt = `Você é um assistente de IA da Newis, uma empresa especializada em soluções de automação com Inteligência Artificial para pequenas e médias empresas. Nossas principais soluções são: Chatbots Inteligentes, Gerenciador de Estoque com IA, Gerenciador Financeiro com IA, Automação de Marketing com IA, Análise Preditiva de Dados com IA, e Otimização de Processos com IA. Um usuário fez a seguinte pergunta: "${userQuestion}". Responda à pergunta de forma concisa e informativa (2-4 frases), focando em como as soluções da Newis podem ajudar. Se a pergunta for muito genérica sobre IA, tente relacioná-la com os benefícios práticos para negócios. Se a pergunta for completamente fora do escopo dos serviços da Newis ou da automação com IA para empresas, responda educadamente que você só pode fornecer informações sobre as soluções da Newis e automação empresarial. Sempre incentive o usuário a entrar em contato com a Newis para uma consulta mais detalhada, fornecendo o link do WhatsApp https://wa.me/5561992892582 e o email neto.snoxs@gmail.com. Não use markdown na sua resposta, apenas texto simples.`;
+
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+                const apiKey = "AIzaSyCyD3x2zCQQn9kP5dA2Bpx0n6KkMUk5DE4";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    if (!response.ok) { const errorData = await response.json(); throw new Error(`Erro API: ${response.status}. ${errorData.error ? errorData.error.message : 'Detalhes não disponíveis.'}`); }
+                    const result = await response.json();
+                    
+                    let aiResponseText = "Desculpe, não consegui processar sua pergunta no momento. Tente novamente mais tarde ou entre em contato conosco diretamente.";
+                    if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
+                        aiResponseText = result.candidates[0].content.parts[0].text.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+                    }
+
+                    const aiMessageDiv = document.createElement('div');
+                    aiMessageDiv.classList.add('chat-message', 'ai-message');
+                    aiMessageDiv.innerHTML = `<p>${aiResponseText.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>`; // Basic sanitization
+                    aiChatArea.appendChild(aiMessageDiv);
+
+                } catch (error) {
+                    const aiErrorDiv = document.createElement('div');
+                    aiErrorDiv.classList.add('chat-message', 'ai-message');
+                    aiErrorDiv.innerHTML = `<p class="text-red-700">Erro ao contatar a IA: ${error.message}</p>`;
+                    aiChatArea.appendChild(aiErrorDiv);
+                } finally {
+                    loadingAiChat.style.display = 'none';
+                    aiChatArea.scrollTop = aiChatArea.scrollHeight; // Scroll to bottom
+                }
+            });
+        }
     </script>
 </body>
 </html>
